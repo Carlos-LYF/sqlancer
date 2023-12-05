@@ -73,7 +73,7 @@ public class GaussDBMSetGenerator {
                 Scope.SESSION), //
         MYISAM_USE_MMAP("myisam_use_mmap", (r) -> Randomly.fromOptions("OFF", "ON"), Scope.GLOBAL),
         OLD_ALTER_TABLE("old_alter_table", (r) -> Randomly.fromOptions("OFF", "ON"), Scope.GLOBAL, Scope.SESSION), //
-        OPTIMIZER_PRUNE_LEVEL("optimizer_prune_level", (r) -> Randomly.fromOptions(0, 1), Scope.GLOBAL, Scope.SESSION), //
+//        OPTIMIZER_PRUNE_LEVEL("optimizer_prune_level", (r) -> Randomly.fromOptions(0, 1), Scope.GLOBAL, Scope.SESSION), //
         OPTIMIZER_SEARCH_DEPTH("optimizer_search_depth", (r) -> r.getLong(0, 62), Scope.GLOBAL, Scope.SESSION), //
         OPTIMIZER_SWITCH("optimizer_switch", Action::getOptimizerSwitchConfiguration, Scope.GLOBAL, Scope.SESSION), //
         PARSER_MAX_MEM_SIZE("parser_max_mem_size", (r) -> r.getLong(10000000, Long.MAX_VALUE), Scope.GLOBAL,

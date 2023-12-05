@@ -29,7 +29,7 @@ public class GaussDBMAlterTable {
 
     private enum Action {
         ALGORITHM, //
-        CHECKSUM, //
+//        CHECKSUM, //
         COMPRESSION, //
         DISABLE_ENABLE_KEYS("Data truncated for functional index"), /* ignore due to http://bugs.GaussDBM.com/?id=96295 */
         DROP_COLUMN("Cannot drop column", "ALGORITHM=INPLACE is not supported.", "ALGORITHM=INSTANT is not supported.",
@@ -82,10 +82,10 @@ public class GaussDBMAlterTable {
                     sb.append("ALGORITHM ");
                     sb.append(Randomly.fromOptions("INSTANT", "INPLACE", "COPY", "DEFAULT"));
                     break;
-                case CHECKSUM:
-                    sb.append("CHECKSUM ");
-                    sb.append(Randomly.fromOptions(0, 1));
-                    break;
+//                case CHECKSUM:
+//                    sb.append("CHECKSUM ");
+//                    sb.append(Randomly.fromOptions(0, 1));
+//                    break;
                 case COMPRESSION:
                     sb.append("COMPRESSION ");
                     sb.append("'");
