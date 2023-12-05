@@ -144,8 +144,8 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
     }
 
     public static class GaussDBMTable extends AbstractRelationalTable<GaussDBMColumn, GaussDBMIndex, GaussDBMGlobalState> {
-        public GaussDBMTable(String tableName, List<GaussDBMColumn> columns, List<GaussDBMIndex> indexes) {
-            super(tableName, columns, indexes, false /* TODO: support views */);
+        public GaussDBMTable(String tableName, List<GaussDBMColumn> columns) {
+            super(tableName, columns, new ArrayList<>(), false /* TODO: support views */);
         }
     }
 
@@ -183,8 +183,8 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
                         while (rs.next()) {
                             String tableName = rs.getString("TABLE_NAME");
                             List<GaussDBMColumn> databaseColumns = getTableColumns(con, tableName, databaseName);
-                            List<GaussDBMIndex> indexes = getIndexes(con, tableName, databaseName);
-                            GaussDBMTable t = new GaussDBMTable(tableName, databaseColumns, indexes);
+//                            List<GaussDBMIndex> indexes = getIndexes(con, tableName, databaseName);
+                            GaussDBMTable t = new GaussDBMTable(tableName, databaseColumns);
                             for (GaussDBMColumn c : databaseColumns) {
                                 c.setTable(t);
                             }
@@ -200,21 +200,22 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
         throw new AssertionError(ex);
     }
 
-    private static List<GaussDBMIndex> getIndexes(SQLConnection con, String tableName, String databaseName)
-            throws SQLException {
-        List<GaussDBMIndex> indexes = new ArrayList<>();
-        try (Statement s = con.createStatement()) {
-            try (ResultSet rs = s.executeQuery(String.format(
-                    "SELECT INDEX_NAME FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME='%s';",
-                    databaseName, tableName))) {
-                while (rs.next()) {
-                    String indexName = rs.getString("INDEX_NAME");
-                    indexes.add(GaussDBMIndex.create(indexName));
-                }
-            }
-        }
-        return indexes;
-    }
+    // 获取单个表的全部索引名字，好像我们不支持
+//    private static List<GaussDBMIndex> getIndexes(SQLConnection con, String tableName, String databaseName)
+//            throws SQLException {
+//        List<GaussDBMIndex> indexes = new ArrayList<>();
+//        try (Statement s = con.createStatement()) {
+//            try (ResultSet rs = s.executeQuery(String.format(
+//                    "SELECT INDEX_NAME FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME='%s';",
+//                    databaseName, tableName))) {
+//                while (rs.next()) {
+//                    String indexName = rs.getString("INDEX_NAME");
+//                    indexes.add(GaussDBMIndex.create(indexName));
+//                }
+//            }
+//        }
+//        return indexes;
+//    }
 
     private static List<GaussDBMColumn> getTableColumns(SQLConnection con, String tableName, String databaseName)
             throws SQLException {
