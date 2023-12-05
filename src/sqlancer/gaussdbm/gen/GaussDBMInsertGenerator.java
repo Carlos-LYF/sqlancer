@@ -41,10 +41,11 @@ public class GaussDBMInsertGenerator {
 
     private SQLQueryAdapter generateReplace() {
         sb.append("REPLACE");
-        if (Randomly.getBoolean()) {
-            sb.append(" ");
-            sb.append(Randomly.fromOptions("LOW_PRIORITY", "DELAYED"));
-        }
+        // 不支持相关语法
+//        if (Randomly.getBoolean()) {
+//            sb.append(" ");
+//            sb.append(Randomly.fromOptions("LOW_PRIORITY", "DELAYED"));
+//        }
         return generateInto();
 
     }
