@@ -138,11 +138,12 @@ public class GaussDBMAlterTable {
                     break;
                 // not relevant:
                 case RENAME:
-                    sb.append("RENAME ");
-                    if (Randomly.getBoolean()) {
-                        sb.append(Randomly.fromOptions("TO", "AS"));
-                        sb.append(" ");
-                    }
+                    sb.append("RENAME TO ");
+                    // 改一下不支持的重命名表语法，我们只有RENAME TO，把RENAME和RENAME AS去掉
+//                    if (Randomly.getBoolean()) {
+//                        sb.append(Randomly.fromOptions("TO", "AS"));
+//                        sb.append(" ");
+//                    }
                     sb.append("t");
                     sb.append(Randomly.smallNumber());
                     couldAffectSchema = true;
