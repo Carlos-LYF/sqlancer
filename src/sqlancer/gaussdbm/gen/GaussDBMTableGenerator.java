@@ -61,7 +61,7 @@ public class GaussDBMTableGenerator {
             sb.append(")");
             sb.append(" ");
             appendTableOptions();
-            appendPartitionOptions();
+            // PARTITION BY不支持，删了
             addCommonErrors(errors);
             return new SQLQueryAdapter(sb.toString(), errors, true);
         }
@@ -78,47 +78,6 @@ public class GaussDBMTableGenerator {
         list.add("Too many keys specified; max 1 keys allowed");
         list.add("The total length of the partitioning fields is too large");
         list.add("Got error -1 - 'Unknown error -1' from storage engine");
-    }
-
-    private enum PartitionOptions {
-        HASH, KEY
-    }
-
-    private void appendPartitionOptions() {
-        if (Randomly.getBoolean()) {
-            return;
-        }
-        sb.append(" PARTITION BY");
-        switch (Randomly.fromOptions(PartitionOptions.values())) {
-            case HASH:
-                if (Randomly.getBoolean()) {
-                    sb.append(" LINEAR");
-                }
-                sb.append(" HASH(");
-                // TODO: consider arbitrary expressions
-                // GaussDBMExpression expr =
-                // GaussDBMRandomExpressionGenerator.generateRandomExpression(Collections.emptyList(),
-                // null, r);
-                // sb.append(GaussDBMVisitor.asString(expr));
-                sb.append(Randomly.fromList(columns));
-                sb.append(")");
-                break;
-            case KEY:
-                if (Randomly.getBoolean()) {
-                    sb.append(" LINEAR");
-                }
-                sb.append(" KEY");
-                if (Randomly.getBoolean()) {
-                    sb.append(" ALGORITHM=");
-                    sb.append(Randomly.fromOptions(1, 2));
-                }
-                sb.append(" (");
-                sb.append(String.join(", ", Randomly.nonEmptySubset(columns)));
-                sb.append(")");
-                break;
-            default:
-                throw new AssertionError();
-        }
     }
 
     private enum TableOptions {
@@ -307,7 +266,8 @@ public class GaussDBMTableGenerator {
                 optionallyAddPrecisionAndScale();
                 break;
             case INT:
-                sb.append(Randomly.fromOptions("TINYINT", "SMALLINT", "MEDIUMINT", "INT", "BIGINT"));
+                // 这里删掉MEDIUMINT类型，因为不能做哈希，但是别的都可以
+                sb.append(Randomly.fromOptions("TINYINT", "SMALLINT",/* "MEDIUMINT",*/ "INT", "BIGINT"));
                 if (Randomly.getBoolean()) {
                     sb.append("(");
                     sb.append(Randomly.getNotCachedInteger(0, 255)); // Display width out of range for column 'c0' (max =
@@ -316,7 +276,8 @@ public class GaussDBMTableGenerator {
                 }
                 break;
             case VARCHAR:
-                sb.append(Randomly.fromOptions("VARCHAR(500)", "TINYTEXT", "TEXT", "MEDIUMTEXT", "LONGTEXT"));
+                // TINYTEXT、MEDIUMTEXT、LONGTEXT也不支持索引
+                sb.append(Randomly.fromOptions("VARCHAR(500)",/* "TINYTEXT",*/ "TEXT"/*, "MEDIUMTEXT", "LONGTEXT"*/));
                 break;
             case FLOAT:
                 sb.append("FLOAT");
