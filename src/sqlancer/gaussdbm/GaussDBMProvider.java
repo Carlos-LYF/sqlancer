@@ -42,7 +42,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
         ALTER_TABLE(GaussDBMAlterTable::create), //
         TRUNCATE_TABLE(GaussDBMTruncateTableGenerator::generate), //
         SELECT_INFO((g) -> new SQLQueryAdapter(
-                "select TABLE_NAME, ENGINE from information_schema.TABLES where table_schema = '" + g.getDatabaseName()
+                "select TABLE_NAME from information_schema.TABLES where table_schema = '" + g.getDatabaseName()
                         + "'")), //
         CREATE_TABLE((g) -> {
             // TODO refactor
