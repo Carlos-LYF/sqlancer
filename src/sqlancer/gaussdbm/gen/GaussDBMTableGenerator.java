@@ -116,7 +116,7 @@ public class GaussDBMTableGenerator {
                 // The valid range for avg_row_length is [0,4294967295]
                 case AVG_ROW_LENGTH:
                     sb.append("AVG_ROW_LENGTH = ");
-                    sb.append(r.getLong(0, 4294967295L + 1));
+                    sb.append(r.getLong(0, 999999L + 1));
                     break;
                 case CHECKSUM:
                     sb.append("CHECKSUM = 1");

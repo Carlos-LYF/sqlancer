@@ -52,10 +52,10 @@ public class GaussDBMInsertGenerator {
 
     private SQLQueryAdapter generateInsert() {
         sb.append("INSERT");
-        if (Randomly.getBoolean()) {
-            sb.append(" ");
-            sb.append(Randomly.fromOptions("LOW_PRIORITY", "DELAYED", "HIGH_PRIORITY"));
-        }
+//        if (Randomly.getBoolean()) {
+//            sb.append(" ");
+//            sb.append(Randomly.fromOptions("LOW_PRIORITY", "DELAYED", "HIGH_PRIORITY"));
+//        }
         if (Randomly.getBoolean()) {
             sb.append(" IGNORE");
         }
