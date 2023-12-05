@@ -19,7 +19,6 @@ public class GaussDBMIndexGenerator {
 
     private final Randomly r;
     private StringBuilder sb = new StringBuilder();
-    private boolean columnIsPrimaryKey;
     private boolean containsInPlace;
     private final GaussDBMSchema schema;
     private final GaussDBMGlobalState globalState;
@@ -70,9 +69,6 @@ public class GaussDBMIndexGenerator {
                 if (i++ != 0) {
                     sb.append(", ");
                 }
-                if (c.isPrimaryKey()) {
-                    columnIsPrimaryKey = true;
-                }
                 sb.append(c.getName());
                 if (Randomly.getBoolean() && c.getType() == GaussDBMDataType.VARCHAR) {
                     sb.append("(");
@@ -87,7 +83,6 @@ public class GaussDBMIndexGenerator {
             }
         }
         sb.append(")");
-        indexOption();
         algorithmOption();
         String string = sb.toString();
         sb = new StringBuilder();
@@ -126,18 +121,6 @@ public class GaussDBMIndexGenerator {
                 containsInPlace = true;
             }
             sb.append(fromOptions);
-        }
-    }
-
-    private void indexOption() {
-        if (Randomly.getBoolean()) {
-            sb.append(" ");
-            if (columnIsPrimaryKey) {
-                // The explicit primary key cannot be made invisible.
-                sb.append("VISIBLE");
-            } else {
-                sb.append(Randomly.fromOptions("VISIBLE", "INVISIBLE"));
-            }
         }
     }
 

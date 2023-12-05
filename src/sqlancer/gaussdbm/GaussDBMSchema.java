@@ -48,23 +48,16 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
 
     public static class GaussDBMColumn extends AbstractTableColumn<GaussDBMTable, GaussDBMDataType> {
 
-        private final boolean isPrimaryKey;
         private final int precision;
 
-        public GaussDBMColumn(String name, GaussDBMDataType columnType, boolean isPrimaryKey, int precision) {
+        public GaussDBMColumn(String name, GaussDBMDataType columnType, int precision) {
             super(name, null, columnType);
-            this.isPrimaryKey = isPrimaryKey;
             this.precision = precision;
         }
 
         public int getPrecision() {
             return precision;
         }
-
-        public boolean isPrimaryKey() {
-            return isPrimaryKey;
-        }
-
     }
 
     public static class GaussDBMTables extends AbstractTables<GaussDBMTable, GaussDBMColumn> {
@@ -154,11 +147,6 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
         public GaussDBMTable(String tableName, List<GaussDBMColumn> columns, List<GaussDBMIndex> indexes) {
             super(tableName, columns, indexes, false /* TODO: support views */);
         }
-
-        public boolean hasPrimaryKey() {
-            return getColumns().stream().anyMatch(GaussDBMColumn::isPrimaryKey);
-        }
-
     }
 
     public static final class GaussDBMIndex extends TableIndex {
@@ -238,8 +226,8 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
                     String columnName = rs.getString("COLUMN_NAME");
                     String dataType = rs.getString("DATA_TYPE");
                     int precision = rs.getInt("NUMERIC_PRECISION");
-                    boolean isPrimaryKey = rs.getString("COLUMN_KEY").equals("PRI");
-                    GaussDBMColumn c = new GaussDBMColumn(columnName, getColumnType(dataType), isPrimaryKey, precision);
+//                    boolean isPrimaryKey = rs.getString("COLUMN_KEY").equals("PRI");
+                    GaussDBMColumn c = new GaussDBMColumn(columnName, getColumnType(dataType), precision);
                     columns.add(c);
                 }
             }

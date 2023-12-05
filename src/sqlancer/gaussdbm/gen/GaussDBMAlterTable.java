@@ -47,9 +47,9 @@ public class GaussDBMAlterTable {
         ROW_FORMAT, //
         STATS_AUTO_RECALC, //
         STATS_PERSISTENT, //
-        PACK_KEYS, RENAME("doesn't exist", "already exists"), /* WITH_WITHOUT_VALIDATION , */
-        DROP_PRIMARY_KEY(
-                "ALGORITHM=INSTANT is not supported. Reason: Dropping a primary key is not allowed without also adding a new primary key. Try ALGORITHM=COPY/INPLACE.");
+        PACK_KEYS, RENAME("doesn't exist", "already exists"); /* WITH_WITHOUT_VALIDATION , */
+//        DROP_PRIMARY_KEY(
+//                "ALGORITHM=INSTANT is not supported. Reason: Dropping a primary key is not allowed without also adding a new primary key. Try ALGORITHM=COPY/INPLACE.");
 
         private final String[] potentialErrors;
 
@@ -108,11 +108,11 @@ public class GaussDBMAlterTable {
                     sb.append(Randomly.fromOptions("DISABLE", "ENABLE"));
                     sb.append(" KEYS");
                     break;
-                case DROP_PRIMARY_KEY:
-                    assert table.hasPrimaryKey();
-                    sb.append("DROP PRIMARY KEY");
-                    couldAffectSchema = true;
-                    break;
+//                case DROP_PRIMARY_KEY:
+//                    assert table.hasPrimaryKey();
+//                    sb.append("DROP PRIMARY KEY");
+//                    couldAffectSchema = true;
+//                    break;
                 case FORCE:
                     sb.append("FORCE");
                     break;
