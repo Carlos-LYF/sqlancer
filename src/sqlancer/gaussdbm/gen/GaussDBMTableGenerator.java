@@ -81,7 +81,8 @@ public class GaussDBMTableGenerator {
     }
 
     private enum TableOptions {
-        AUTO_INCREMENT, AVG_ROW_LENGTH, CHECKSUM, COMPRESSION, DELAY_KEY_WRITE, /* ENCRYPTION, */ ENGINE, INSERT_METHOD,
+        // 自增不支持
+        /*AUTO_INCREMENT, */AVG_ROW_LENGTH, CHECKSUM, COMPRESSION, DELAY_KEY_WRITE, /* ENCRYPTION, */ ENGINE, INSERT_METHOD,
         KEY_BLOCK_SIZE, MAX_ROWS, MIN_ROWS, PACK_KEYS, STATS_AUTO_RECALC, STATS_PERSISTENT, STATS_SAMPLE_PAGES;
 
         public static List<TableOptions> getRandomTableOptions() {
@@ -108,10 +109,10 @@ public class GaussDBMTableGenerator {
                 sb.append(", ");
             }
             switch (o) {
-                case AUTO_INCREMENT:
-                    sb.append("AUTO_INCREMENT = ");
-                    sb.append(r.getPositiveInteger());
-                    break;
+//                case AUTO_INCREMENT:
+//                    sb.append("AUTO_INCREMENT = ");
+//                    sb.append(r.getPositiveInteger());
+//                    break;
                 // The valid range for avg_row_length is [0,4294967295]
                 case AVG_ROW_LENGTH:
                     sb.append("AVG_ROW_LENGTH = ");
