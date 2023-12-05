@@ -9,7 +9,6 @@ import sqlancer.gaussdbm.GaussDBMSchema;
 import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMColumn;
 import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMDataType;
 import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable;
-import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable.GaussDBMEngine;
 import sqlancer.gaussdbm.GaussDBMVisitor;
 import sqlancer.gaussdbm.ast.GaussDBMExpression;
 import sqlancer.gaussdbm.gen.GaussDBMExpressionGenerator;
@@ -53,7 +52,7 @@ public class GaussDBMIndexGenerator {
         GaussDBMExpressionGenerator gen = new GaussDBMExpressionGenerator(globalState).setColumns(table.getColumns());
         sb.append(table.getName());
         sb.append("(");
-        if (table.getEngine() == GaussDBMEngine.INNO_DB && Randomly.getBoolean()) {
+        if (Randomly.getBoolean()) {
             for (int i = 0; i < Randomly.smallNumber() + 1; i++) {
                 if (i != 0) {
                     sb.append(", ");
@@ -94,9 +93,6 @@ public class GaussDBMIndexGenerator {
         sb = new StringBuilder();
         if (containsInPlace) {
             errors.add("ALGORITHM=INPLACE is not supported");
-        }
-        if (table.getEngine() == GaussDBMEngine.ARCHIVE) {
-            errors.add("Table handler doesn't support NULL in given index.");
         }
         errors.add("A primary key index cannot be invisible");
         errors.add("Functional index on a column is not supported. Consider using a regular index instead.");

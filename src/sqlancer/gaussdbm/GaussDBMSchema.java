@@ -4,7 +4,6 @@ import sqlancer.Randomly;
 import sqlancer.SQLConnection;
 import sqlancer.common.schema.*;
 import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable;
-import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable.GaussDBMEngine;
 import sqlancer.gaussdbm.ast.GaussDBMConstant;
 
 import java.sql.ResultSet;
@@ -15,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBMTable> {
 
@@ -153,32 +151,8 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
     }
 
     public static class GaussDBMTable extends AbstractRelationalTable<GaussDBMColumn, GaussDBMIndex, GaussDBMGlobalState> {
-
-        public enum GaussDBMEngine {
-            INNO_DB("InnoDB"), MY_ISAM("MyISAM"), MEMORY("MEMORY"), HEAP("HEAP"), CSV("CSV"), MERGE("MERGE"),
-            ARCHIVE("ARCHIVE"), FEDERATED("FEDERATED");
-
-            private final String s;
-
-            GaussDBMEngine(String s) {
-                this.s = s;
-            }
-
-            public static GaussDBMEngine get(String val) {
-                return Stream.of(values()).filter(engine -> engine.s.equalsIgnoreCase(val)).findFirst().get();
-            }
-
-        }
-
-        private final GaussDBMEngine engine;
-
-        public GaussDBMTable(String tableName, List<GaussDBMColumn> columns, List<GaussDBMIndex> indexes, GaussDBMEngine engine) {
+        public GaussDBMTable(String tableName, List<GaussDBMColumn> columns, List<GaussDBMIndex> indexes) {
             super(tableName, columns, indexes, false /* TODO: support views */);
-            this.engine = engine;
-        }
-
-        public GaussDBMEngine getEngine() {
-            return engine;
         }
 
         public boolean hasPrimaryKey() {
@@ -216,15 +190,13 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
                 List<GaussDBMTable> databaseTables = new ArrayList<>();
                 try (Statement s = con.createStatement()) {
                     try (ResultSet rs = s.executeQuery(
-                            "select TABLE_NAME, ENGINE from information_schema.TABLES where table_schema = '"
+                            "select TABLE_NAME from information_schema.TABLES where table_schema = '"
                                     + databaseName + "';")) {
                         while (rs.next()) {
                             String tableName = rs.getString("TABLE_NAME");
-                            String tableEngineStr = rs.getString("ENGINE");
-                            GaussDBMEngine engine = GaussDBMEngine.get(tableEngineStr);
                             List<GaussDBMColumn> databaseColumns = getTableColumns(con, tableName, databaseName);
                             List<GaussDBMIndex> indexes = getIndexes(con, tableName, databaseName);
-                            GaussDBMTable t = new GaussDBMTable(tableName, databaseColumns, indexes, engine);
+                            GaussDBMTable t = new GaussDBMTable(tableName, databaseColumns, indexes);
                             for (GaussDBMColumn c : databaseColumns) {
                                 c.setTable(t);
                             }

@@ -5,7 +5,6 @@ import sqlancer.common.query.SQLQueryAdapter;
 import sqlancer.common.schema.AbstractTable;
 import sqlancer.gaussdbm.GaussDBMGlobalState;
 import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable;
-import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable.GaussDBMEngine;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +23,7 @@ public class GaussDBMRepair {
 
     public static SQLQueryAdapter repair(GaussDBMGlobalState globalState) {
         List<GaussDBMTable> tables = globalState.getSchema().getDatabaseTablesRandomSubsetNotEmpty();
-        for (GaussDBMTable table : tables) {
-            // see https://bugs.GaussDBM.com/bug.php?id=95820
-            if (table.getEngine() == GaussDBMEngine.MY_ISAM) {
-                return new SQLQueryAdapter("SELECT 1");
-            }
-        }
+        // see https://bugs.GaussDBM.com/bug.php?id=95820
         return new GaussDBMRepair(tables).repair();
     }
 

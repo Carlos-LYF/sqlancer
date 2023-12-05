@@ -177,11 +177,12 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
         globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName);
         globalState.getState().logStatement("CREATE DATABASE " + databaseName);
         globalState.getState().logStatement("USE " + databaseName);
-        String url = String.format("jdbc:mysql://%s:%d?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true",
+        // 连接串格式：postgresql://10.247.42.235:6000/test
+        String url = String.format("jdbc:postgresql://%s:%d/mysql_db",
                 host, port);
         Connection con = DriverManager.getConnection(url, username, password);
         try (Statement s = con.createStatement()) {
-            s.execute("DROP DATABASE IF EXISTS " + databaseName);
+            s.execute("DROP DATABASE IF EXISTS " + databaseName + " CASCADE");
         }
         try (Statement s = con.createStatement()) {
             s.execute("CREATE DATABASE " + databaseName);

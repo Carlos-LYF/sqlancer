@@ -1,6 +1,5 @@
 package sqlancer.gaussdbm.gen;
 
-import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
 import sqlancer.common.DBMSCommon;
 import sqlancer.common.query.ExpectedErrors;
@@ -8,7 +7,6 @@ import sqlancer.common.query.SQLQueryAdapter;
 import sqlancer.gaussdbm.GaussDBMGlobalState;
 import sqlancer.gaussdbm.GaussDBMSchema;
 import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMDataType;
-import sqlancer.gaussdbm.GaussDBMSchema.GaussDBMTable.GaussDBMEngine;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,9 +19,6 @@ public class GaussDBMTableGenerator {
     private boolean setPrimaryKey;
     private final String tableName;
     private final Randomly r;
-    private boolean tableHasNullableColumn;
-    private GaussDBMEngine engine;
-    private int keysSpecified;
     private final List<String> columns = new ArrayList<>();
     private final GaussDBMSchema schema;
     private final GaussDBMGlobalState globalState;
@@ -67,16 +62,6 @@ public class GaussDBMTableGenerator {
             sb.append(" ");
             appendTableOptions();
             appendPartitionOptions();
-            if (engine == GaussDBMEngine.CSV && (tableHasNullableColumn || setPrimaryKey)) {
-                // TODO
-                // results in an error
-                throw new IgnoreMeException();
-            } else if (engine == GaussDBMEngine.ARCHIVE && (tableHasNullableColumn || keysSpecified > 1)) {
-                errors.add("Too many keys specified; max 1 keys allowed");
-                errors.add("Table handler doesn't support NULL in given index");
-                addCommonErrors(errors);
-                return new SQLQueryAdapter(sb.toString(), errors, true);
-            }
             addCommonErrors(errors);
             return new SQLQueryAdapter(sb.toString(), errors, true);
         }
@@ -100,9 +85,6 @@ public class GaussDBMTableGenerator {
     }
 
     private void appendPartitionOptions() {
-        if (engine != GaussDBMEngine.INNO_DB) {
-            return;
-        }
         if (Randomly.getBoolean()) {
             return;
         }
@@ -195,7 +177,6 @@ public class GaussDBMTableGenerator {
                     // "EXAMPLE": java.sql.SQLSyntaxErrorException: Unknown storage engine 'EXAMPLE'
                     // "MERGE": java.sql.SQLException: Table 't0' is read only
                     String fromOptions = Randomly.fromOptions("InnoDB", "MyISAM", "MEMORY", "HEAP", "CSV", "ARCHIVE");
-                    this.engine = GaussDBMEngine.get(fromOptions);
                     sb.append("ENGINE = ");
                     sb.append(fromOptions);
                     break;
@@ -251,7 +232,8 @@ public class GaussDBMTableGenerator {
     }
 
     private enum ColumnOptions {
-        NULL_OR_NOT_NULL, UNIQUE, COMMENT, COLUMN_FORMAT, STORAGE, PRIMARY_KEY
+        // 删掉了COLUMN_FORMAT与STORAGE
+        NULL_OR_NOT_NULL, UNIQUE, COMMENT, PRIMARY_KEY
     }
 
     private void appendColumnOption(GaussDBMDataType type) {
@@ -259,9 +241,6 @@ public class GaussDBMTableGenerator {
         boolean isNull = false;
         boolean columnHasPrimaryKey = false;
         List<ColumnOptions> columnOptions = Randomly.subset(ColumnOptions.values());
-        if (!columnOptions.contains(ColumnOptions.NULL_OR_NOT_NULL)) {
-            tableHasNullableColumn = true;
-        }
         if (isTextType) {
             // TODO: restriction due to the limited key length
             columnOptions.remove(ColumnOptions.PRIMARY_KEY);
@@ -276,7 +255,6 @@ public class GaussDBMTableGenerator {
                         if (Randomly.getBoolean()) {
                             sb.append("NULL");
                         }
-                        tableHasNullableColumn = true;
                         isNull = true;
                     } else {
                         sb.append("NOT NULL");
@@ -284,7 +262,6 @@ public class GaussDBMTableGenerator {
                     break;
                 case UNIQUE:
                     sb.append("UNIQUE");
-                    keysSpecified++;
                     if (Randomly.getBoolean()) {
                         sb.append(" KEY");
                     }
@@ -293,14 +270,14 @@ public class GaussDBMTableGenerator {
                     // TODO: generate randomly
                     sb.append(String.format("COMMENT '%s' ", "asdf"));
                     break;
-                case COLUMN_FORMAT:
-                    sb.append("COLUMN_FORMAT ");
-                    sb.append(Randomly.fromOptions("FIXED", "DYNAMIC", "DEFAULT"));
-                    break;
-                case STORAGE:
-                    sb.append("STORAGE ");
-                    sb.append(Randomly.fromOptions("DISK", "MEMORY"));
-                    break;
+//                case COLUMN_FORMAT:
+//                    sb.append("COLUMN_FORMAT ");
+//                    sb.append(Randomly.fromOptions("FIXED", "DYNAMIC", "DEFAULT"));
+//                    break;
+//                case STORAGE:
+//                    sb.append("STORAGE ");
+//                    sb.append(Randomly.fromOptions("DISK", "MEMORY"));
+//                    break;
                 case PRIMARY_KEY:
                     // PRIMARY KEYs cannot be NULL
                     if (allowPrimaryKey && !setPrimaryKey && !isNull) {
