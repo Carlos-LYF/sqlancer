@@ -117,6 +117,7 @@ public class GaussDBMSchema extends AbstractSchema<GaussDBMGlobalState, GaussDBM
             case "mediumint":
             case "int":
             case "bigint":
+            case "integer":
                 return GaussDBMDataType.INT;
             case "varchar":
             case "tinytext":
