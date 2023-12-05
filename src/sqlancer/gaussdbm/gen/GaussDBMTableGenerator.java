@@ -291,11 +291,12 @@ public class GaussDBMTableGenerator {
             default:
                 throw new AssertionError();
         }
-        if (randomType.isNumeric()) {
-            if (!globalState.usesPQS() && Randomly.getBoolean()) {
-                sb.append(" ZEROFILL");
-            }
-        }
+        // ZEROFILL不支持
+//        if (randomType.isNumeric()) {
+//            if (!globalState.usesPQS() && Randomly.getBoolean()) {
+//                sb.append(" ZEROFILL");
+//            }
+//        }
     }
 
     public static void optionallyAddPrecisionAndScale() {

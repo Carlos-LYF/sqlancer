@@ -163,17 +163,7 @@ public class GaussDBMSetGenerator {
         if (isSingleThreaded) {
             a = Randomly.fromOptions(Action.values());
             Scope[] scopes = a.getScopes();
-            Scope randomScope = Randomly.fromOptions(scopes);
-            switch (randomScope) {
-            case GLOBAL:
-                sb.append("GLOBAL");
-                break;
-            case SESSION:
-                sb.append("SESSION");
-                break;
-            default:
-                throw new AssertionError(randomScope);
-            }
+            sb.append("SESSION");
 
         } else {
             do {

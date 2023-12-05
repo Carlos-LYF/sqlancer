@@ -28,9 +28,9 @@ public class GaussDBMDeleteGenerator {
         GaussDBMExpressionGenerator gen = new GaussDBMExpressionGenerator(globalState).setColumns(randomTable.getColumns());
         ExpectedErrors errors = new ExpectedErrors();
         sb.append("DELETE");
-        if (Randomly.getBoolean()) {
-            sb.append(" LOW_PRIORITY");
-        }
+//        if (Randomly.getBoolean()) {
+//            sb.append(" LOW_PRIORITY");
+//        }
         if (Randomly.getBoolean()) {
             sb.append(" QUICK");
         }

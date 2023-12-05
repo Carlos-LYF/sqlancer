@@ -31,7 +31,7 @@ public class GaussDBMAlterTable {
         ALGORITHM, //
 //        CHECKSUM, //
         COMPRESSION, //
-        DISABLE_ENABLE_KEYS("Data truncated for functional index"), /* ignore due to http://bugs.GaussDBM.com/?id=96295 */
+        //        DISABLE_ENABLE_KEYS("Data truncated for functional index"), /* ignore due to http://bugs.GaussDBM.com/?id=96295 */
         DROP_COLUMN("Cannot drop column", "ALGORITHM=INPLACE is not supported.", "ALGORITHM=INSTANT is not supported.",
                 "Duplicate entry", "has a partitioning function dependency and cannot be dropped or renamed.",
                 "A primary key index cannot be invisible" /*
@@ -71,7 +71,7 @@ public class GaussDBMAlterTable {
         if (table.getColumns().size() == 1) {
             list.remove(Action.DROP_COLUMN);
         }
-        List<Action> selectedActions = Randomly.subset(list);
+        List<Action> selectedActions = Randomly.subset(list).subList(0, 1);
         int i = 0;
         for (Action a : selectedActions) {
             if (i++ != 0) {
@@ -104,10 +104,10 @@ public class GaussDBMAlterTable {
                     sb.append(table.getRandomColumn().getName());
                     couldAffectSchema = true;
                     break;
-                case DISABLE_ENABLE_KEYS:
-                    sb.append(Randomly.fromOptions("DISABLE", "ENABLE"));
-                    sb.append(" KEYS");
-                    break;
+//                case DISABLE_ENABLE_KEYS:
+//                    sb.append(Randomly.fromOptions("DISABLE", "ENABLE"));
+//                    sb.append(" KEYS");
+//                    break;
 //                case DROP_PRIMARY_KEY:
 //                    assert table.hasPrimaryKey();
 //                    sb.append("DROP PRIMARY KEY");
