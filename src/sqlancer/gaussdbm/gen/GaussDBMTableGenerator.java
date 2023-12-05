@@ -156,11 +156,11 @@ public class GaussDBMTableGenerator {
                     break;
                 case MAX_ROWS:
                     sb.append("MAX_ROWS = ");
-                    sb.append(r.getLong(0, Long.MAX_VALUE));
+                    sb.append(r.getLong(0, 99999999));
                     break;
                 case MIN_ROWS:
                     sb.append("MIN_ROWS = ");
-                    sb.append(r.getLong(1, Long.MAX_VALUE));
+                    sb.append(r.getLong(1, 99999999));
                     break;
                 case PACK_KEYS:
                     sb.append("PACK_KEYS = ");

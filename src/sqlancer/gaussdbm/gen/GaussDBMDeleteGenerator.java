@@ -34,17 +34,17 @@ public class GaussDBMDeleteGenerator {
         if (Randomly.getBoolean()) {
             sb.append(" QUICK");
         }
-        if (Randomly.getBoolean()) {
-            sb.append(" IGNORE");
-        }
+//        if (Randomly.getBoolean()) {
+//            sb.append(" IGNORE");
+//        }
         // TODO: support partitions
         sb.append(" FROM ");
         sb.append(randomTable.getName());
-        if (Randomly.getBoolean()) {
+//        if (Randomly.getBoolean()) {
             sb.append(" WHERE ");
             sb.append(GaussDBMVisitor.asString(gen.generateExpression()));
             GaussDBMErrors.addExpressionErrors(errors);
-        }
+//        }
         errors.addAll(Arrays.asList("doesn't have this option",
                 "Truncated incorrect DOUBLE value" /*
                  * ignore as a workaround for https://bugs.GaussDBM.com/bug.php?id=95997

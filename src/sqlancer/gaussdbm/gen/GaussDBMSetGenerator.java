@@ -91,7 +91,7 @@ public class GaussDBMSetGenerator {
          */
         RBR_EXEC_MODE("rbr_exec_mode", (r) -> Randomly.fromOptions("IDEMPOTENT", "STRICT"), //
                 Scope.SESSION), //
-        READ_BUFFER_SIZE("read_buffer_size", (r) -> r.getLong(8200, 2147479552), Scope.GLOBAL, Scope.SESSION), //
+        // READ_BUFFER_SIZE("read_buffer_size", (r) -> r.getLong(8200, 2147479552), Scope.GLOBAL, Scope.SESSION), //
         READ_RND_BUFFER_SIZE("read_rnd_buffer_size", (r) -> r.getLong(1, 2147483647), Scope.GLOBAL, Scope.SESSION), //
         SCHEMA_DEFINITION_CACHE("schema_definition_cache", (r) -> r.getLong(256, 524288), Scope.GLOBAL), //
         SHOW_CREATE_TABLE_VERBOSITY("show_create_table_verbosity", (r) -> Randomly.fromOptions("OFF", "ON"),
