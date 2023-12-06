@@ -21,6 +21,8 @@ public final class GaussDBMErrors {
         errors.add("Data truncated for functional index");
         errors.add("cannot be null");
         errors.add("Incorrect decimal value");
+        errors.add("Distributed key column can't be updated in current version");
+        errors.add("invalid input syntax for integer:");
     }
 
 }
