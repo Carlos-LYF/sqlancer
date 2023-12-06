@@ -35,7 +35,7 @@ public class GaussDBMAnalyzeTable {
         if (Randomly.getBoolean()) {
             sb.append(Randomly.fromOptions("NO_WRITE_TO_BINLOG", "LOCAL"));
         }
-        sb.append(" TABLE ");
+//        sb.append(" TABLE ");
         if (Randomly.getBoolean()) {
             analyzeWithoutHistogram();
         } else {

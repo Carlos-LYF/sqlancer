@@ -35,7 +35,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
         SET_VARIABLE(GaussDBMSetGenerator::set), //
         REPAIR(GaussDBMRepair::repair), //
         OPTIMIZE(GaussDBMOptimize::optimize), //
-        CHECKSUM(GaussDBMChecksum::checksum), //
+//        CHECKSUM(GaussDBMChecksum::checksum), //
         CHECK_TABLE(GaussDBMCheckTable::check), //
         ANALYZE_TABLE(GaussDBMAnalyzeTable::analyze), //
         FLUSH(GaussDBMFlush::create), RESET(GaussDBMReset::create), CREATE_INDEX(GaussDBMIndexGenerator::create), //
@@ -101,7 +101,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
             // affects the global state, so do not execute
             nrPerformed = globalState.getOptions().getNumberConcurrentThreads() == 1 ? r.getInteger(0, 1) : 0;
             break;
-        case CHECKSUM:
+//        case CHECKSUM:
         case CHECK_TABLE:
         case ANALYZE_TABLE:
             nrPerformed = r.getInteger(0, 2);

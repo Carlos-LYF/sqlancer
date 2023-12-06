@@ -1,6 +1,5 @@
 package sqlancer.gaussdbm.gen;
 
-import sqlancer.Randomly;
 import sqlancer.common.query.ExpectedErrors;
 import sqlancer.common.query.SQLQueryAdapter;
 import sqlancer.gaussdbm.GaussDBMErrors;
@@ -49,6 +48,7 @@ public class GaussDBMDeleteGenerator {
                 "Truncated incorrect DOUBLE value" /*
                  * ignore as a workaround for https://bugs.GaussDBM.com/bug.php?id=95997
                  */, "Truncated incorrect INTEGER value",
+                "Truncated incorrect double value",
                 "Truncated incorrect DECIMAL value", "Data truncated for functional index"));
         // TODO: support ORDER BY
         return new SQLQueryAdapter(sb.toString(), errors);

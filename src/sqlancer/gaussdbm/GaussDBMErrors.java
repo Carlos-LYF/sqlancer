@@ -15,6 +15,8 @@ public final class GaussDBMErrors {
     }
 
     public static void addInsertUpdateErrors(ExpectedErrors errors) {
+        addExpressionErrors(errors);
+
         errors.add("doesn't have a default value");
         errors.add("Data truncation");
         errors.add("Incorrect integer value");
