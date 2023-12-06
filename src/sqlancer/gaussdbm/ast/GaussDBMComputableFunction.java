@@ -41,19 +41,19 @@ public class GaussDBMComputableFunction implements GaussDBMExpression {
          * @see <a href="https://dev.GaussDBM.com/doc/refman/8.0/en/bit-functions.html#function_bit-count">Bit Functions
          * and Operators</a>
          */
-        BIT_COUNT(1, "BIT_COUNT") {
-            @Override
-            public GaussDBMConstant apply(GaussDBMConstant[] evaluatedArgs, GaussDBMExpression... args) {
-                GaussDBMConstant arg = evaluatedArgs[0];
-                if (arg.isNull()) {
-                    return GaussDBMConstant.createNullConstant();
-                } else {
-                    long val = arg.castAs(CastType.SIGNED).getInt();
-                    return GaussDBMConstant.createIntConstant(Long.bitCount(val));
-                }
-            }
-
-        },
+//        BIT_COUNT(1, "BIT_COUNT") {
+//            @Override
+//            public GaussDBMConstant apply(GaussDBMConstant[] evaluatedArgs, GaussDBMExpression... args) {
+//                GaussDBMConstant arg = evaluatedArgs[0];
+//                if (arg.isNull()) {
+//                    return GaussDBMConstant.createNullConstant();
+//                } else {
+//                    long val = arg.castAs(CastType.SIGNED).getInt();
+//                    return GaussDBMConstant.createIntConstant(Long.bitCount(val));
+//                }
+//            }
+//
+//        },
         // BENCHMARK(2, "BENCHMARK") {
         //
         // @Override

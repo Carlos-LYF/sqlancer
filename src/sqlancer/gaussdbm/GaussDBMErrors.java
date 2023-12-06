@@ -8,6 +8,8 @@ public final class GaussDBMErrors {
     }
 
     public static void addExpressionErrors(ExpectedErrors errors) {
+        errors.add("smallint out of range");
+        errors.add("tinyint out of range");
         errors.add("BIGINT value is out of range"); // e.g., CAST(-('-1e500') AS SIGNED)
         errors.add("is not valid for CHARACTER SET");
     }
@@ -23,6 +25,7 @@ public final class GaussDBMErrors {
         errors.add("Incorrect decimal value");
         errors.add("Distributed key column can't be updated in current version");
         errors.add("invalid input syntax for integer:");
+        errors.add(" must be type boolean, not type "); // 11号版本把这个放开
     }
 
 }
