@@ -71,7 +71,10 @@ public class GaussDBMAlterTable {
         if (table.getColumns().size() == 1) {
             list.remove(Action.DROP_COLUMN);
         }
-        List<Action> selectedActions = Randomly.subset(list).subList(0, 1);
+        List<Action> selectedActions = Randomly.subset(list);
+        if (!selectedActions.isEmpty() && selectedActions.size() > 1) {
+            selectedActions = selectedActions.subList(0, 1);
+        }
         int i = 0;
         for (Action a : selectedActions) {
             if (i++ != 0) {
