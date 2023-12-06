@@ -31,9 +31,9 @@ public class GaussDBMDeleteGenerator {
 //        if (Randomly.getBoolean()) {
 //            sb.append(" LOW_PRIORITY");
 //        }
-        if (Randomly.getBoolean()) {
-            sb.append(" QUICK");
-        }
+//        if (Randomly.getBoolean()) {
+//            sb.append(" QUICK");
+//        }
 //        if (Randomly.getBoolean()) {
 //            sb.append(" IGNORE");
 //        }
