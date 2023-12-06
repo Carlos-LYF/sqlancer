@@ -89,6 +89,7 @@ public class GaussDBMIndexGenerator {
         if (containsInPlace) {
             errors.add("ALGORITHM=INPLACE is not supported");
         }
+        errors.add("Cannot create index whose evaluation cannot be enforced to remote nodes");
         errors.add("A primary key index cannot be invisible");
         errors.add("Functional index on a column is not supported. Consider using a regular index instead.");
         errors.add("Incorrect usage of spatial/fulltext/hash index and explicit index order");
@@ -127,7 +128,8 @@ public class GaussDBMIndexGenerator {
     private void indexType() {
         if (Randomly.getBoolean()) {
             sb.append(" USING ");
-            sb.append(Randomly.fromOptions("BTREE", "HASH"));
+            // USING HASH不支持，会报错
+            sb.append("BTREE");
         }
     }
 
