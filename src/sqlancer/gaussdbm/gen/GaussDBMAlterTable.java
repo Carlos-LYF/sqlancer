@@ -28,7 +28,7 @@ public class GaussDBMAlterTable {
     }
 
     private enum Action {
-        ALGORITHM, //
+//        ALGORITHM, //
 //        CHECKSUM, //
         COMPRESSION, //
         //        DISABLE_ENABLE_KEYS("Data truncated for functional index"), /* ignore due to http://bugs.GaussDBM.com/?id=96295 */
@@ -40,7 +40,7 @@ public class GaussDBMAlterTable {
          */,
                 "Field in list of fields for partition function not found in table", "in 'partition function'",
                 "has a functional index dependency and cannot be dropped or renamed."),
-        FORCE, //
+//        FORCE, //
         // ORDER_BY is supported, see below
         DELAY_KEY_WRITE, //
         INSERT_METHOD, //
@@ -81,10 +81,10 @@ public class GaussDBMAlterTable {
                 sb.append(", ");
             }
             switch (a) {
-                case ALGORITHM:
-                    sb.append("ALGORITHM ");
-                    sb.append(Randomly.fromOptions("INSTANT", "INPLACE", "COPY", "DEFAULT"));
-                    break;
+//                case ALGORITHM:
+//                    sb.append("ALGORITHM ");
+//                    sb.append(Randomly.fromOptions("INSTANT", "INPLACE", "COPY", "DEFAULT"));
+//                    break;
 //                case CHECKSUM:
 //                    sb.append("CHECKSUM ");
 //                    sb.append(Randomly.fromOptions(0, 1));
@@ -116,9 +116,9 @@ public class GaussDBMAlterTable {
 //                    sb.append("DROP PRIMARY KEY");
 //                    couldAffectSchema = true;
 //                    break;
-                case FORCE:
-                    sb.append("FORCE");
-                    break;
+//                case FORCE:
+//                    sb.append("FORCE");
+//                    break;
                 case INSERT_METHOD:
                     sb.append("INSERT_METHOD ");
                     sb.append(Randomly.fromOptions("NO", "FIRST", "LAST"));

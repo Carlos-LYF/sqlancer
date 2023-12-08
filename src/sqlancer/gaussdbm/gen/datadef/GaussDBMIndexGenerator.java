@@ -14,6 +14,7 @@ import sqlancer.gaussdbm.ast.GaussDBMExpression;
 import sqlancer.gaussdbm.gen.GaussDBMExpressionGenerator;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class GaussDBMIndexGenerator {
 
@@ -89,6 +90,11 @@ public class GaussDBMIndexGenerator {
         if (containsInPlace) {
             errors.add("ALGORITHM=INPLACE is not supported");
         }
+
+        errors.addRegex(Pattern.compile("function ifnull\\([a-z]+( [a-z]+)?, [a-z]+( [a-z]+)?\\) does not exist")); // 11号版本这个也放开
+
+        errors.add("cannot use subquery in index expression");
+        errors.add("data type unknown has no default operator class for access method \"btree\"");
         errors.add("Cannot create index whose evaluation cannot be enforced to remote nodes");
         errors.add("A primary key index cannot be invisible");
         errors.add("Functional index on a column is not supported. Consider using a regular index instead.");

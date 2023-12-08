@@ -50,6 +50,7 @@ public class GaussDBMDeleteGenerator {
                  */, "Truncated incorrect INTEGER value",
                 "Truncated incorrect double value",
                 "Truncated incorrect DECIMAL value", "Data truncated for functional index"));
+        GaussDBMErrors.addInsertUpdateErrors(errors);
         // TODO: support ORDER BY
         return new SQLQueryAdapter(sb.toString(), errors);
     }

@@ -35,16 +35,17 @@ public class GaussDBMAnalyzeTable {
         if (Randomly.getBoolean()) {
             sb.append(Randomly.fromOptions("NO_WRITE_TO_BINLOG", "LOCAL"));
         }
-//        sb.append(" TABLE ");
-        if (Randomly.getBoolean()) {
+        sb.append(" ");
+        // 直方图不支持
+//        if (Randomly.getBoolean()) {
             analyzeWithoutHistogram();
-        } else {
-            if (Randomly.getBoolean()) {
-                dropHistogram();
-            } else {
-                updateHistogram();
-            }
-        }
+//        } else {
+//            if (Randomly.getBoolean()) {
+//                dropHistogram();
+//            } else {
+//                updateHistogram();
+//            }
+//        }
         return new SQLQueryAdapter(sb.toString());
     }
 

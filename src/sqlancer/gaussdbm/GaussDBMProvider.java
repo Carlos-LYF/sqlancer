@@ -36,7 +36,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
         REPAIR(GaussDBMRepair::repair), //
         OPTIMIZE(GaussDBMOptimize::optimize), //
 //        CHECKSUM(GaussDBMChecksum::checksum), //
-        CHECK_TABLE(GaussDBMCheckTable::check), //
+//        CHECK_TABLE(GaussDBMCheckTable::check), //
         ANALYZE_TABLE(GaussDBMAnalyzeTable::analyze), //
         FLUSH(GaussDBMFlush::create), RESET(GaussDBMReset::create), CREATE_INDEX(GaussDBMIndexGenerator::create), //
         ALTER_TABLE(GaussDBMAlterTable::create), //
@@ -102,7 +102,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
             nrPerformed = globalState.getOptions().getNumberConcurrentThreads() == 1 ? r.getInteger(0, 1) : 0;
             break;
 //        case CHECKSUM:
-        case CHECK_TABLE:
+//        case CHECK_TABLE:
         case ANALYZE_TABLE:
             nrPerformed = r.getInteger(0, 2);
             break;
@@ -174,7 +174,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
             port = GaussDBMOptions.DEFAULT_PORT;
         }
         String databaseName = globalState.getDatabaseName();
-        globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName);
+        globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName + " CASCADE");
         globalState.getState().logStatement("CREATE DATABASE " + databaseName);
         globalState.getState().logStatement("USE " + databaseName);
         // 连接串格式：postgresql://10.247.42.235:6000/test
