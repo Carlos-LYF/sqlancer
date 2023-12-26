@@ -174,7 +174,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
             port = GaussDBMOptions.DEFAULT_PORT;
         }
         String databaseName = globalState.getDatabaseName();
-        globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName + " CASCADE");
+        globalState.getState().logStatement("DROP DATABASE IF EXISTS " + databaseName);
         globalState.getState().logStatement("CREATE DATABASE " + databaseName);
         globalState.getState().logStatement("USE " + databaseName);
         // 连接串格式：postgresql://10.247.42.235:6000/test
@@ -182,7 +182,7 @@ public class GaussDBMProvider extends SQLProviderAdapter<GaussDBMGlobalState, Ga
                 host, port);
         Connection con = DriverManager.getConnection(url, username, password);
         try (Statement s = con.createStatement()) {
-            s.execute("DROP DATABASE IF EXISTS " + databaseName + " CASCADE");
+            s.execute("DROP DATABASE IF EXISTS " + databaseName);
         }
         try (Statement s = con.createStatement()) {
             s.execute("CREATE DATABASE " + databaseName);
